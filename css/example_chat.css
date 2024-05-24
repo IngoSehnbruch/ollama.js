@@ -1,0 +1,36 @@
+body {
+    background-color: #3d3d3d;
+    overflow-y: scroll;
+}
+
+.message {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.user-message {
+    background-color: #e9f7fd;
+    text-align: left;
+}
+
+.assistant-message {
+    background-color: #f8f9fa;
+    text-align: left;
+}
+
+.processing-message {
+    background-color: #ffdddd;
+    text-align: left;
+}
+
+.codeblock {
+    background-color: #222;
+    color: #efe;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    overflow-x: auto;
+}

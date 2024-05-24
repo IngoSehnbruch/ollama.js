@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ollama.js chat</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/example_chat.css">
+</head>
+
+<body>
+
+    <div id="not-connected" class="container mt-5 mb-5">
+        <div id="connecting" class="message processing-message text-center">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Connecting to server...
+        </div>
+        <div id="connection-error" class="d-none">
+            <div class="message processing-message">
+                Connection error! Please check the server address.
+            </div>
+            <div class="card card-body mb-2">
+                <strong>If you haven't installed ollama yet, you can download it here: <a href="https://ollama.com/" target="_blank">ollama.com</a></strong> 
+            </div>            
+            <div class="card card-body">
+                <div class="form-group row mb-2">
+                    <label for="server-setup" class="col-sm-4 col-form-label">Server (e.g. http://localhost:11434):</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" id="server-setup" placeholder="Enter server address and port. Default: http://localhost:11434" value="">
+                    </div>
+                </div>
+                <button id="btn-connect" class="btn btn-primary btn-block" type="button">Retry</button>
+            </div>            
+        </div>
+    </div>
+
+    <div id="connected" class="container mt-5 mb-5 d-none">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">                
+                    <div class="col-6"><strong>ollama.js chat</strong></div>
+                    <div class="col-6 text-right" title="You can change the model in the settings.">Model: <strong id="model_selected"></strong></div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group row mb-2" title="You can change the systemprompt in the settings.">
+                    <label for="systemprompt" class="col-sm-4">System Prompt:</label>
+                    <div class="col-sm-8">
+                        <strong id="systemprompt_info"></strong>
+                    </div>
+                </div>
+                
+                <div id="messages" class="mb-4"></div>
+                <div id="processing" class="message processing-message mb-5 d-none"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...</div>
+
+                <div class="form-group">
+                    <label for="prompt">Your Prompt:</label>
+                    <textarea class="form-control" id="prompt" placeholder="Enter prompt here" rows="3">write python script to scrape a website</textarea>
+                </div>       
+
+                <div class="row">
+                    <div class="col-2">
+                        <button id="btn-reset" class="btn btn-danger btn-block" type="button">Reset Chat</button>    
+                    </div>
+                    <div class="col-2">
+                        <button id="btn-toggleSettings" class="btn btn-warning btn-block" type="button" data-toggle="collapse" data-target="#settings" aria-expanded="false" aria-controls="settings">Toggle Settings</button>
+                    </div>
+                    <div class="col-5 text-right pt-2">
+                        <input class="form-check-input" type="checkbox" id="tts" name="tts" value="tts" checked> 
+                        <label for="tts">Text-To-Speech</label>                        
+                    </div>
+                    <div class="col-3">
+                        <button id="btn-generate" class="btn btn-success btn-block">Generate Text</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="collapse mt-3" id="settings">
+            <div class="card">
+                <div class="card-header"><strong>settings</strong></div>               
+                <div class="card-body">
+                    <div class="form-group row mb-2">
+                        <label for="server" class="col-sm-4 col-form-label">Server</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="server" placeholder="Enter server address and port. Default: http://localhost:11434" value="">
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="model" class="col-sm-4 col-form-label">Select Model</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="model"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="systemprompt" class="col-sm-4 col-form-label">Systemprompt</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="systemprompt" placeholder="Enter system prompt here" rows="2"></textarea>
+                        </div>
+                    </div>                    
+
+                    <div id="options" class="my-4"></div>
+
+
+                    <div class="form-group row mb-2">
+                        <label for="voice" class="col-sm-4 col-form-label">TTS Voice</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" id="ttsvoice"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-2">
+                        <label for="voicespeed" class="col-sm-4 col-form-label">TTS Rate</label>
+                        <div class="col-sm-8">
+                            <input class="form-control" id="ttsrate" placeholder="Enter tts rate (=speed). Default: 1" value="1">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="js/ollama.js"></script>
+
+    <script type="text/javascript" src="js/example_chat.js"></script>    
+    <script>
+        // init on page load
+        window.onload = init_chat()
+    </script>
+</body>
+</html>
